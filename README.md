@@ -54,6 +54,6 @@ var events = [
 请按照代码注释在此区域修改代码。
 
 ### 网页展示
-![网页展示](https://github.com/Mr-data20/ddl-website/blob/main/demopicture/picture1.jpg)
-![网页展示](https://github.com/Mr-data20/ddl-website/blob/main/demopicutre/picture2.jpg)
-![网页展示](https://github.com/Mr-data20/ddl-website/blob/main/demopicutre/picture3.jpg)
+![网页展示1](https://github.com/Mr-data20/ddl-website/blob/main/demopicture/picture1.jpg)
+![网页展示2](https://github.com/Mr-data20/ddl-website/blob/main/demopicture/picture2.jpg)
+![网页展示3](https://github.com/Mr-data20/ddl-website/blob/main/demopicture/picture3.jpg)
