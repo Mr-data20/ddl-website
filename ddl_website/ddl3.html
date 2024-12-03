@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>你的title</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('https://bing.img.run/rand_m.php');  
+        background-size: cover;  
+        background-repeat: no-repeat;  
+        background-position: center center; 
+        background-attachment: fixed;
+        margin: 0;
+        padding: 0;
+    }
+
+    .event-container {
+        padding: 10px;
+        max-width: 500px;
+        margin: auto;
+    }
+
+    .event {
+        background-color: #fff;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+    }
+
+    .event-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .countdown {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .red {
+        color: red;
+    }
+
+    .remark-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        max-width: 300px;
+        z-index: 999;
+        word-wrap: break-word;
+    }
+
+    .remark-popup p {
+        margin: 0;
+    }
+
+    .remark-popup-close {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<div class="event-container" id="event-container">
+    <!-- 事件将会动态添加到这里 -->
+</div>
+
+<div class="remark-popup" style="display: none;">
+    <span class="remark-popup-close">✖</span>
+    <p id="popup-remark"></p>
+</div>
+
+<script>
+// 定义倒计时事件，模块化，不够用可以自己复制粘贴
+var events = [
+//title为事件名，deadline定义的是事件，remark为备注内容
+//备注可以用 \n 来换行
+    { title: '示例事件1', deadline: '2024-12-03 20:59:59', remark: '这里换成备注' },
+    { title: '示例事件2', deadline: '2024-05-05 23:59:59', remark: '这里换成备注' },
+    { title: '示例事件3', deadline: '2024-05-12 08:30:00', remark: '这里换成备注' },
+    { title: '示例事件4', deadline: '2026-05-18 14:00:00', remark: '这里换成备注' },
+
+];
+// 获取事件容器元素
+var eventContainer = document.getElementById('event-container');
+
+// 更新事件函数
+function updateEvents() {
+    // 先清空事件容器
+    eventContainer.innerHTML = '';
+
+    // 先分割出小于和大于当前时间的事件
+    var pastEvents = [];
+    var futureEvents = [];
+    events.forEach(function(event) {
+        var deadline = new Date(event.deadline).getTime();
+        var now = new Date().getTime();
+        if (deadline < now) {
+            pastEvents.push(event);
+        } else {
+            futureEvents.push(event);
+        }
+    });
+
+    // 对过去事件按降序排序
+    pastEvents.sort(function(a, b) {
+        return new Date(b.deadline).getTime() - new Date(a.deadline).getTime();
+    });
+
+    // 对未来事件按升序排序
+    futureEvents.sort(function(a, b) {
+        return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
+    });
+
+    // 将过去事件放在最后
+    var sortedEvents = futureEvents.concat(pastEvents);
+
+    // 更新事件列表
+    sortedEvents.forEach(function(event) {
+        var eventDiv = document.createElement('div');
+        eventDiv.classList.add('event');
+
+        var titleDiv = document.createElement('div');
+        titleDiv.classList.add('event-title');
+        titleDiv.textContent = event.title;
+
+        var countdownDiv = document.createElement('div');
+        countdownDiv.classList.add('countdown');
+
+        // 更新倒计时
+        var deadline = new Date(event.deadline).getTime();
+        var now = new Date().getTime();
+        var distance = deadline - now;
+
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // 格式化倒计时文本
+        var countdownText = days + " 天 " + hours + " 小时 " + minutes + " 分钟 " + seconds + " 秒";
+
+        countdownDiv.textContent = countdownText;
+
+        // 如果时间小于一天，将倒计时设置为红色
+        if (distance < (1000 * 60 * 60 * 24) && distance > 0) {
+            countdownDiv.classList.add('red');
+        }
+
+        eventDiv.appendChild(titleDiv);
+        eventDiv.appendChild(countdownDiv);
+        eventContainer.appendChild(eventDiv);
+
+        // 添加点击事件，显示事件备注
+        eventDiv.addEventListener('click', function() {
+            var remark = event.remark;
+            document.getElementById('popup-remark').innerText = remark;
+            document.querySelector('.remark-popup').style.display = 'block';
+        });
+    });
+}
+
+// 初始调用一次更新事件函数
+updateEvents();
+
+// 每秒更新一次倒计时
+setInterval(function() {
+    updateEvents();
+}, 1000);
+
+// 关闭备注弹窗事件
+document.querySelector('.remark-popup-close').addEventListener('click', function() {
+    document.querySelector('.remark-popup').style.display = 'none';
+});
+
+// 接收来自admin园艺2306.html的新事件并添加到事件列表中
+window.addEventListener("message", function(event) {
+    var newEvent = event.data;
+    console.log("接收到的新事件：", newEvent); // 添加这行用于调试
+    events.push(newEvent);
+    updateEvents(); // 更新事件列表显示
+});
+
+</script>
+
+</body>
+</html>

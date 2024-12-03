@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>目录页面</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-image: url('https://bing.img.run/rand_m.php');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        background-color: rgba(255, 255, 255, 0.5);
+        padding: 10px;
+        border-radius: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    button {
+        padding: 15px 20px;
+        margin-right: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    p {
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <!--下面这行是目录页面的介绍文本框。使用<br>换行-->
+    <p contenteditable="true">赵铭宇设计的ddl列表<br>这里你可以替换成你自己的简介<br>点击某个事项将弹出其对应的具体内容备注<br>君子协定，使用时候请标注我的名字赵铭宇</p>
+<!--下面是用来设置按钮、按钮上的文字、以及点击按钮打开哪个网页的。例如下面这行，就回生成一个上面写着我是按钮四个字的按钮，点击后会打开同目录下的ddl1.html网页-->
+    <button onclick="redirectToClass('ddl1.html')">我是按钮</button>
+    <button onclick="redirectToClass('ddl2.html')">我也是啊</button>
+    <button onclick="redirectToClass('ddl3.html')">我也一样</button>
+<!--上面的按钮可以通过复制粘贴调整数量-->
+</div>
+
+<script>
+    function redirectToClass(classPage) {
+        window.location.href = classPage;
+    }
+</script>
+
+</body>
+</html>
